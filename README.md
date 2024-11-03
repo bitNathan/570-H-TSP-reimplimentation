@@ -144,8 +144,11 @@ trained by REINFORCE (Williams 1992) algorithm
 - uses Monte Carlo sampling
 
 policy gradient computation
-_not sure why this equn. doesn't render_
+
+_not sure why this eqn. doesn't render_
+
 $$\nabla_{\theta}J(\theta)=\mathbb{E}_{\pi \theta}[\nabla_{\theta}log\pi_{\theta}(\tau|s)A^{\pi \theta}(\tau)]$$
+
 - $$\approx \frac{1}{N} \sum_{i=1}^{N}{(R(\tau^i)-b(s))\nabla_{\theta}log\pi_{\theta}(\tau^i|s)}$$
 - where $\tau$ is a a feasible tsp solution
 - $R(\tau^i)$ is the reward, inverse of the length, ie $=-L(\tau^i)$  

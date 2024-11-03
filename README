@@ -1,5 +1,5 @@
 ## Project
-*reimplementing [this H-TSP paper](https://github.com/Learning4Optimization-HUST/H-TSP)*
+*reimplementing [this H-TSP paper](https://github.com/Learning4Optimization-HUST/H-TSP )*
 
 *html flowchart in repo as well*
 
@@ -8,14 +8,14 @@
 ### Delivery Metrics
 
 *Compare my results with their version running locally*
-compare all these to [the og paper](https://github.com/Learning4Optimization-HUST/H-TSP) and format like their tables
+compare all these to [the og paper](https://github.com/Learning4Optimization-HUST/H-TSP ) and format like their tables
 - runtime
 - accuracy as Gap %
 - memory footprint(?)
 
 ## Model
 *Dataset from TSPLIB*
-*[GitHub here](https://github.com/Learning4Optimization-HUST/H-TSP)*
+*[GitHub here](https://github.com/Learning4Optimization-HUST/H-TSP )*
 ### Inputs
 Undirected Graph
 $$

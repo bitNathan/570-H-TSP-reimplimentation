@@ -1,7 +1,7 @@
 import tsplib95
 import os
 
-def TraceTour(tsp_file, tour_file):
+def getTourLength(tsp_file, tour_file):
     # print('Tracing Tour file:', tour_file)
     try:
         solution = tsplib95.load(tour_file)
@@ -19,7 +19,7 @@ def TraceTour(tsp_file, tour_file):
 if __name__ == '__main__':   
     path = os.path.dirname(os.path.dirname(__file__))
     
-    print('bayg29 Tour Length:', TraceTour(path+'/data/extracted/bayg29.tsp', path+'/data/extracted/bayg29.opt.tour'))
+    print('bayg29 Tour Length:', getTourLength(path+'/data/extracted/bayg29.tsp', path+'/data/extracted/bayg29.opt.tour'))
     
-    print('att48 Tour Length:', TraceTour(path+'/data/extracted/att48.tsp', path+'/data/extracted/att48.opt.tour'))
+    print('att48 Tour Length:', getTourLength(path+'/data/extracted/att48.tsp', path+'/data/extracted/att48.opt.tour'))
     

@@ -1,0 +1,3 @@
+data/*.tsp*
+data/*.tour*
+data/xray.problems.gz

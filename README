@@ -1,5 +1,5 @@
 ## Project
-*reimplementing [this H-TSP paper](https://www.microsoft.com/en-us/research/uploads/prod/2023/02/8643.PanX_.pdf)*
+*reimplementing [this H-TSP paper](https://github.com/Learning4Optimization-HUST/H-TSP)*
 
 *html flowchart in repo as well*
 
@@ -8,7 +8,7 @@
 ### Delivery Metrics
 
 *Compare my results with their version running locally*
-compare all these to [the og paper](https://www.microsoft.com/en-us/research/uploads/prod/2023/02/8643.PanX_.pdf) and format like their tables
+compare all these to [the og paper](https://github.com/Learning4Optimization-HUST/H-TSP) and format like their tables
 - runtime
 - accuracy as Gap %
 - memory footprint(?)

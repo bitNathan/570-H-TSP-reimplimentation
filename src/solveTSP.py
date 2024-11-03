@@ -1,4 +1,3 @@
-from getTourLength import getTourLength
 import tsplib95 as tsp
 import os
 from time import time

@@ -125,7 +125,7 @@ encoder-decoder
 		- graph feature vectors, first and last nodes of current partial solution
 		- start and endpoints of open-loop TSP
 Markov Decision Process (MDP)
-- ==Kool, Van Hoof, and Welling 2019; Kwon et al. 2020==
+- Kool, Van Hoof, and Welling 2019; Kwon et al. 2020
 - mask removes nodes that have been visited
 - reward is negative cost for each feasible solution
 
@@ -134,7 +134,7 @@ Markov Decision Process (MDP)
 
 #### Upper Model
 trained on Proximal Policy Optimization (Schulman et al. 2017)
-- minimizes this objective function $$L(\theta)=\hat{\mathbb{E}_t}[min(r_t(\theta)\hat{A_t},clip(r_t(\theta),1-\epsilon,1+\epsilon)\hat{A_t})]$$
+- minimizes this objective function $L(\theta)=\hat{\mathbb{E}_t}[min(r_t(\theta)\hat{A_t},clip(r_t(\theta),1-\epsilon,1+\epsilon)\hat{A_t})]$
 	- where $r_t$ denotes the probability ratio of 2 policies$$r_t(\theta)=\frac{\pi_{\theta}(a_t|s_t)}{\pi_{\theta old}(a_t|s_t)}$$
 	- $\hat{A_t}$ is the advantage function, how much better the new policy is to the old one, Generalized Advantage Estimator (GAE) $$\hat{A_t}=\sum_{l=1}^{\infty}{(\gamma \lambda)^l(r_t+\gamma\hat{V}(s_t+l+1)-\hat{V}(s_t+l))}$$
 		- where $r_t$ is the reward at t, $\hat{V}$ is the state value function, $\gamma$ is the discount factor, and $\lambda$ is a hyperparameter
@@ -144,7 +144,8 @@ trained by REINFORCE (Williams 1992) algorithm
 - uses Monte Carlo sampling
 
 policy gradient computation
-- $$\nabla_{\theta}J(\theta)=\mathbb{E}_{\pi \theta}[\nabla_{\theta}log\pi_{\theta}(\tau|s)A^{\pi \theta}(\tau)]$$
+_not sure why this equn. doesn't render_
+$$\nabla_{\theta}J(\theta)=\mathbb{E}_{\pi \theta}[\nabla_{\theta}log\pi_{\theta}(\tau|s)A^{\pi \theta}(\tau)]$$
 - $$\approx \frac{1}{N} \sum_{i=1}^{N}{(R(\tau^i)-b(s))\nabla_{\theta}log\pi_{\theta}(\tau^i|s)}$$
 - where $\tau$ is a a feasible tsp solution
 - $R(\tau^i)$ is the reward, inverse of the length, ie $=-L(\tau^i)$  

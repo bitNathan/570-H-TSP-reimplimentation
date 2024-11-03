@@ -2,7 +2,7 @@ import tsplib95 as tsp
 import os
 from time import time
 
-def solveProblem(problem):
+def calculateDistance(problem):
     distance = 0
     for node in problem.get_nodes():
         if node+1 <= problem.dimension:
@@ -16,16 +16,12 @@ def loadProblem(tsp_file, tour_file):
     solution = tsp.load(tour_file)
     return problem, solution
 
-if __name__ == '__main__':  
-    path = os.path.dirname(os.path.dirname(__file__))
-    print('Solving tsp for bayg29...')
-    
-    problem, solution = loadProblem(path+'/data/extracted/bayg29.tsp',
-        path+'/data/extracted/bayg29.opt.tour')
-    
+def solveProblem(tsp_file, tour_file):
+    print('Solving tsp for', tsp_file,'...')
+    problem, solution = loadProblem(tsp_file, tour_file)
     start_time = time()
     
-    calc_distance = solveProblem(problem)
+    calc_distance = calculateDistance(problem)
     
     end_time = time()
     best_distance = problem.trace_tours(solution.tours)[0]
@@ -35,3 +31,9 @@ if __name__ == '__main__':
     print('bayg29 Calculated Tour Length:', calc_distance)
     print('bayg29 actual Tour Length:', best_distance)
     print('Gap %:', (calc_distance - best_distance)/calc_distance*100)
+
+
+if __name__ == '__main__':  
+    path = os.path.dirname(os.path.dirname(__file__))
+    solveProblem(path+'/data/test_data/bayg29.tsp', path+'/data/test_data/bayg29.opt.tour')
+    solveProblem(path+'/data/test_data/att48.tsp', path+'/data/test_data/att48.opt.tour')

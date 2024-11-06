@@ -82,6 +82,8 @@ augment each node with a vector
 - coordinates of previous node in $\tau$ (if applicable, 0 otherwise)
 - coordinates of next node in $\tau$ (if applicable, 0 otherwise)
 - Boolean whether node has been visited
+
+
 Creates Tensor of (N, 11) (11 is num features above, coordinate = 2 numbers)
 This processed by linear layer to create (N, C) tensor
 - Max pooling and zero padding over C dimension to get grid features

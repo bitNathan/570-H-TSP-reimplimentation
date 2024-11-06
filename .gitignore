@@ -5,3 +5,5 @@ data/extracted/*.tsp*
 data/xray.problems.gz
 
 src/__pycache__/
+
+solutions

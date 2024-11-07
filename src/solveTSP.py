@@ -2,15 +2,16 @@ import tsplib95 as tsp
 import os
 from time import time
 from augment_data import *
+import networkx as nx
 
 
-def calculateDistance(problem):
+def calculateDistance(graph):
     distance = 0.0
-    for node in problem.get_nodes():
-        if node+1 <= problem.dimension:
-            distance += problem.get_weight(node, node+1)
+    for node in graph.nodes:
+        if node+1 <= graph.number_of_nodes():
+            distance += graph.edges[node, node+1]['weight']
         else:
-            distance += problem.get_weight(node, 1)
+            distance += graph.edges[node, 1]['weight']
     return distance
 
 
@@ -31,20 +32,34 @@ def save_file_func(save_file, tsp_file, time_taken, calc_distance, best_distance
         file.write('    Gap %: '+str(round(gap_percent, 2))+'\n')
     print('Results saved to', save_file)
 
+def find_best_distance(solution, G):
+    nodes = solution.tours[0]
+    best_distance = 0
+    for i, node in enumerate(nodes):
+        # print(i, 'node =', nodes[i])
+        node1 = nodes[i]
+        node2 = nodes[i+1] if i+1 < len(nodes) else nodes[0]
+        best_distance += G.edges[node1, node2]['weight']
+    return best_distance
+
 
 def solveProblem(tsp_file, tour_file, save_file=None):
+    path = os.path.dirname(os.path.dirname(__file__))
+    
     print('Solving tsp for', tsp_file, '...')
     problem, solution = loadProblem(tsp_file, tour_file)
-    print(problem.as_name_dict())
     # for attribute in dir(problem):
     #     if not attribute.startswith('_'):
     #         print('ATTR:', attribute, getattr(problem, attribute))
     start_time = time()
     problem = augment_data(problem, solution, debug=True)
-    calc_distance = calculateDistance(problem)
+    G = nx.read_gpickle(os.path.join(path, 'data/gpickle', problem.name+'.gpickle'))
+    calc_distance = calculateDistance(G)
 
     end_time = time()
-    best_distance = problem.trace_tours(solution.tours)[0]
+    
+    best_distance = find_best_distance(solution, G)
+    
     time_taken = end_time - start_time
     gap_percent = (calc_distance - best_distance)/calc_distance*100
 
@@ -65,9 +80,9 @@ if __name__ == '__main__':
     save_file = path+'/solutions/manual_solutions_'+str(timestamp)+'.txt'
     save_file = None
 
-    solveProblem(path+'/data/test_data/bayg29.tsp',
-                 path+'/data/test_data/bayg29.opt.tour',
+    solveProblem(path+'/data/bayg29.tsp',
+                 path+'/data/bayg29.opt.tour',
                  save_file)
-    solveProblem(path+'/data/test_data/att48.tsp',
-                 path+'/data/test_data/att48.opt.tour',
+    solveProblem(path+'/data/att48.tsp',
+                 path+'/data/att48.opt.tour',
                  save_file)

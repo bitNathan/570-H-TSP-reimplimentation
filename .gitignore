@@ -1,8 +1,4 @@
-data/*.tsp*
-data/*.tour*
-data/extracted/*.tour*
-data/extracted/*.tsp*
-data/xray.problems.gz
+data/*
 
 src/__pycache__/
 

@@ -1,10 +1,11 @@
 import tsplib95 as tsp
 import os
 from time import time
+from augment_data import *
 
 
 def calculateDistance(problem):
-    distance = 0
+    distance = 0.0
     for node in problem.get_nodes():
         if node+1 <= problem.dimension:
             distance += problem.get_weight(node, node+1)
@@ -34,8 +35,12 @@ def save_file_func(save_file, tsp_file, time_taken, calc_distance, best_distance
 def solveProblem(tsp_file, tour_file, save_file=None):
     print('Solving tsp for', tsp_file, '...')
     problem, solution = loadProblem(tsp_file, tour_file)
+    print(problem.as_name_dict())
+    # for attribute in dir(problem):
+    #     if not attribute.startswith('_'):
+    #         print('ATTR:', attribute, getattr(problem, attribute))
     start_time = time()
-
+    problem = augment_data(problem, solution, debug=True)
     calc_distance = calculateDistance(problem)
 
     end_time = time()

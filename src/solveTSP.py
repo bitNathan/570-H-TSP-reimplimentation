@@ -61,7 +61,6 @@ def solveProblem(tsp_file, tour_file, save_file=None):
     #     if not attribute.startswith('_'):
     #         print('ATTR:', attribute, getattr(problem, attribute))
     start_time = time()
-    problem = augment_data(problem, solution, debug=True)
     if problem.name.endswith('.tsp'):
         problem.name = problem.name[:-4]
     try:
@@ -69,6 +68,8 @@ def solveProblem(tsp_file, tour_file, save_file=None):
     except Exception as e:
         print('Error reading gpickle file:', e)
         return
+    
+    G = augment_data(G)
     calc_distance = calculateDistance(G)
 
     end_time = time()
@@ -93,23 +94,28 @@ if __name__ == '__main__':
 
     # comment for testing
     save_file = path+'/solutions/manual_solutions_'+str(timestamp)+'.txt'
-    save_file = 'manual_all_solutions_nx.txt'
+    save_file = None
     
-    # getting num files
-    files_to_process = []
-    for filename in os.listdir(path+'/data'):
-        if filename.endswith('.tsp'):
-            files_to_process.append(filename)
-    total = len(files_to_process)   
+    filename = 'ulysses16.tsp'
+    tsp_file = path+'/data/'+filename
+    tour_file = path+'/data/'+filename[:-4]+'.opt.tour'
+    solveProblem(tsp_file, tour_file, save_file)
+    
+    # # getting num files
+    # files_to_process = []
+    # for filename in os.listdir(path+'/data'):
+    #     if filename.endswith('.tsp'):
+    #         files_to_process.append(filename)
+    # total = len(files_to_process)   
 
-    # processing files
-    for i, filename in enumerate(files_to_process):
-        tour_file = path+'/data/'+filename[:-4]+'.opt.tour'
-        tsp_file = path+'/data/'+filename
-        if not os.path.exists(tour_file):
-            print('No tour file found for', filename)
-            continue
-        print('\rProcessing file', filename, i, 'of', total, end='')
+    # # processing files
+    # for i, filename in enumerate(files_to_process):
+    #     tour_file = path+'/data/'+filename[:-4]+'.opt.tour'
+    #     tsp_file = path+'/data/'+filename
+    #     if not os.path.exists(tour_file):
+    #         print('No tour file found for', filename)
+    #         continue
+    #     print('\rProcessing file', filename, i, 'of', total, end='')
         
-        solveProblem(tsp_file, tour_file, save_file)
+    #     solveProblem(tsp_file, tour_file, save_file)
     print('All files processed')

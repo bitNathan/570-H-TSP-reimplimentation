@@ -12,10 +12,34 @@ Should go through files in data and
 '''
 
 def normalize_tsp_file(filename):
-    # TODO optimize with numpy
+    
     problem = tsp.load(filename)
     G = problem.get_graph()
     
+    # normalize coords
+    min_x = float('inf')
+    max_x = float('-inf')
+    min_y = float('inf')
+    max_y = float('-inf')
+    # find mins and maxes
+    for node, data in G.nodes(data=True):
+        x, y = data['coord']
+        if x < min_x:
+            min_x = x
+        if x > max_x:
+            max_x = x
+        if y < min_y:
+            min_y = y
+        if y > max_y:
+            max_y = y
+    
+    for node, data in G.nodes(data=True):
+        x, y = data['coord']
+        normalized_x = (x - min_x) / (max_x - min_x)
+        normalized_y = (y - min_y) / (max_y - min_y)
+        data['coord'] = (normalized_x, normalized_y)
+    
+    # edges
     min_weight = float('inf')
     max_weight = float('-inf')
     

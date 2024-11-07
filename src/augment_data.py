@@ -47,6 +47,7 @@ def cluster_relative_coord(node):
 def augment_data(graph):
     
     for node in graph.nodes:
+        graph.nodes[node]['number'] = node
         graph.nodes[node]['cluster'] = cluster_node(graph.nodes[node])
         graph.nodes[node]['center_relative_coord'] = center_relative_coord(graph.nodes[node])
         graph.nodes[node]['cluster_relative_coord'] = cluster_relative_coord(graph.nodes[node])

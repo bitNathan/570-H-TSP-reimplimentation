@@ -7,11 +7,15 @@ import networkx as nx
 
 def calculateDistance(graph):
     distance = 0.0
-    for node in graph.nodes:
-        if node+1 <= graph.number_of_nodes():
-            distance += graph.edges[node, node+1]['weight']
-        else:
-            distance += graph.edges[node, 1]['weight']
+    try:
+        for node in graph.nodes:
+            if node+1 <= graph.number_of_nodes():
+                distance += graph.edges[node, node+1]['weight']
+            else:
+                distance += graph.edges[node, 1]['weight']
+    except Exception as e:
+        print('Error in calculateDistance:', e)
+        return 1
     return distance
 
 
@@ -36,10 +40,15 @@ def find_best_distance(solution, G):
     nodes = solution.tours[0]
     best_distance = 0
     for i, node in enumerate(nodes):
-        # print(i, 'node =', nodes[i])
-        node1 = nodes[i]
-        node2 = nodes[i+1] if i+1 < len(nodes) else nodes[0]
-        best_distance += G.edges[node1, node2]['weight']
+        try:
+            # print(i, 'node =', nodes[i])
+            node1 = nodes[i]
+            node2 = nodes[i+1] if i+1 < len(nodes) else nodes[0]
+            best_distance += G.edges[node1, node2]['weight']
+        except Exception as e:
+            # other function prints error, so no need to print here
+            # print('Error in find_best_distance:', e)
+            return 1
     return best_distance
 
 
@@ -52,8 +61,14 @@ def solveProblem(tsp_file, tour_file, save_file=None):
     #     if not attribute.startswith('_'):
     #         print('ATTR:', attribute, getattr(problem, attribute))
     start_time = time()
-    problem = augment_data(problem, solution, debug=True)
-    G = nx.read_gpickle(os.path.join(path, 'data/gpickle', problem.name+'.gpickle'))
+    # problem = augment_data(problem, solution, debug=True)
+    if problem.name.endswith('.tsp'):
+        problem.name = problem.name[:-4]
+    try:
+        G = nx.read_gpickle(os.path.join(path, 'data/gpickle', problem.name+'.gpickle'))
+    except Exception as e:
+        print('Error reading gpickle file:', e)
+        return
     calc_distance = calculateDistance(G)
 
     end_time = time()
@@ -78,11 +93,23 @@ if __name__ == '__main__':
 
     # comment for testing
     save_file = path+'/solutions/manual_solutions_'+str(timestamp)+'.txt'
-    save_file = None
+    save_file = 'manual_all_solutions_nx.txt'
+    
+    # getting num files
+    files_to_process = []
+    for filename in os.listdir(path+'/data'):
+        if filename.endswith('.tsp'):
+            files_to_process.append(filename)
+    total = len(files_to_process)   
 
-    solveProblem(path+'/data/bayg29.tsp',
-                 path+'/data/bayg29.opt.tour',
-                 save_file)
-    solveProblem(path+'/data/att48.tsp',
-                 path+'/data/att48.opt.tour',
-                 save_file)
+    # processing files
+    for i, filename in enumerate(files_to_process):
+        tour_file = path+'/data/'+filename[:-4]+'.opt.tour'
+        tsp_file = path+'/data/'+filename
+        if not os.path.exists(tour_file):
+            print('No tour file found for', filename)
+            continue
+        print('\rProcessing file', filename, i, 'of', total, end='')
+        
+        solveProblem(tsp_file, tour_file, save_file)
+    print('All files processed')

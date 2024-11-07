@@ -61,7 +61,7 @@ def solveProblem(tsp_file, tour_file, save_file=None):
     #     if not attribute.startswith('_'):
     #         print('ATTR:', attribute, getattr(problem, attribute))
     start_time = time()
-    # problem = augment_data(problem, solution, debug=True)
+    problem = augment_data(problem, solution, debug=True)
     if problem.name.endswith('.tsp'):
         problem.name = problem.name[:-4]
     try:

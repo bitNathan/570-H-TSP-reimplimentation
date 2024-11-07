@@ -1,9 +1,7 @@
 import numpy as np
 
 
-def augment_data(problem, solution, debug=False):
-    if debug:
-        print('Augmenting data...')
+def augment_data(problem, solution):
     
     # Data lebelling inconsistent
         # NODE_COORD_SECTION (correct)

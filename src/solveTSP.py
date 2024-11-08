@@ -109,11 +109,15 @@ def solveProblem(tsp_file, tour_file, save_file=None):
     # print('G.nodes[1]:', G.nodes[8])
     while len(tau) < G.number_of_nodes():
         subProb_nodes, start, end = generateSubProb(G, tau)
-        sobSol = solveSubproblem(G, subProb_nodes, start, end)
-        tau.extend(sobSol)
+        if len(subProb_nodes) < 3:
+            tau.extend(subProb_nodes)
+        else:
+            sobSol = solveSubproblem(G, subProb_nodes, start, end)
+            tau.extend(sobSol)
         G = update_graph(G, tau)
 
     end_time = time()
+    # print(tau)
     calc_distance = calculateDistance(G, tau)
     best_distance = find_best_distance(solution, G)
     
@@ -134,8 +138,8 @@ if __name__ == '__main__':
     timestamp = time()
 
     # comment for testing
-    save_file = path+'/solutions/manual_solutions_'+str(timestamp)+'.txt'
-    save_file = path+'/splitting_framework.txt'
+    # save_file = path+'/solutions/manual_solutions_'+str(timestamp)+'.txt'
+    save_file = path+'/solutions/splitting_framework_but_correct.txt'
     
     # filename = 'ulysses16.tsp'
     # tsp_file = path+'/data/'+filename

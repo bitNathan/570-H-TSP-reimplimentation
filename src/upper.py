@@ -1,13 +1,18 @@
 def generateSubProb(G, tau):
-    visited = set()
+    # print('running generateSubProb')
+    # finding target cluster
     for node in G.nodes():
-        if node not in visited:
-            visited.add(node)
+        if G.nodes[node]['visited'] == False:
             break
     target_cluster = G.nodes[node]['cluster']
-    target_nodes = [n for n in G.nodes() if n not in visited and G.nodes[n]['cluster'] == target_cluster]
+    target_nodes = [n for n in G.nodes() if G.nodes[n]['visited'] == False and G.nodes[n]['cluster'] == target_cluster]
     
-    while len(target_nodes) <= 2:
-        target_nodes = [n for n in G.nodes() if n not in visited]
-    
+    # Ensure target_nodes has at least 3 nodes
+    if len(target_nodes) < 3:
+        for node in G.nodes():
+            if G.nodes[node]['visited'] == False and node not in target_nodes:
+                target_nodes.append(node)
+                if len(target_nodes) >= 3:
+                    break
+
     return target_nodes, target_nodes[0], target_nodes[-1]

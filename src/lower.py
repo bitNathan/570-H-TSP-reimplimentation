@@ -1,5 +1,6 @@
 def solveSubproblem(graph, nodes, start_node, end_node):
-    # TODO reorder nodes
+    
+    # print('subsolving:', nodes)
     ordered_nodes = [start_node]
     nodes.remove(start_node)
     nodes.remove(end_node)

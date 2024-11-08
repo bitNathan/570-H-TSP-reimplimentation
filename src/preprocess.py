@@ -11,6 +11,7 @@ Should go through files in data and
     normalize weights
 '''
 
+
 def normalize_tsp_file(filename):
     
     problem = tsp.load(filename)
@@ -57,6 +58,7 @@ def normalize_tsp_file(filename):
     
     return G
 
+
 if __name__ == '__main__':
     path = os.path.dirname(os.path.dirname(__file__))
     data_dir = os.path.join(path, 'data')
@@ -87,7 +89,7 @@ if __name__ == '__main__':
         signal.alarm(120)  # Set the timeout to 2 minutes
         try:
             G = normalize_tsp_file(os.path.join(data_dir, file))
-            nx.write_gpickle(G, os.path.join(data_dir, 'gpickle' ,file[:-4]+'.gpickle'))
+            nx.write_gpickle(G, os.path.join(data_dir, 'gpickle', file[:-4]+'.gpickle'))
         except TimeoutError:
             print('Timeout processing file', file)
         except Exception as e:

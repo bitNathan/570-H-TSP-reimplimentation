@@ -1,10 +1,10 @@
 import tsplib95 as tsp
 import os
 from time import time
-from augment_data import *
+from augment_data import augment_data
 import networkx as nx
-from lower import *
-from upper import *
+from lower import solveSubproblem
+from upper import generateSubProb
 from numpy.linalg import norm as linalg_norm
 from numpy import array
 
@@ -40,6 +40,7 @@ def save_file_func(save_file, tsp_file, time_taken, calc_distance, best_distance
         file.write('    Gap %: '+str(round(gap_percent, 2))+'\n')
     print('Results saved to', save_file)
 
+
 def find_best_distance(solution, G):
     nodes = solution.tours[0]
     best_distance = 0
@@ -51,9 +52,10 @@ def find_best_distance(solution, G):
             best_distance += G.edges[node1, node2]['weight']
         except Exception as e:
             # other function prints error, so no need to print here
-            # print('Error in find_best_distance:', e)
+            print('Error in find_best_distance:', e)
             return 1
     return best_distance
+
 
 def get_closest_node(G, coord):
     closest_node = None
@@ -67,6 +69,7 @@ def get_closest_node(G, coord):
             closest_distance = distance
             closest_node = node
     return closest_node
+
 
 def update_graph(G, tau):
     for i, node in enumerate(tau):
@@ -139,28 +142,28 @@ if __name__ == '__main__':
 
     # comment for testing
     # save_file = path+'/solutions/manual_solutions_'+str(timestamp)+'.txt'
-    save_file = path+'/solutions/splitting_framework_but_correct.txt'
+    save_file = None
     
-    # filename = 'ulysses16.tsp'
-    # tsp_file = path+'/data/'+filename
-    # tour_file = path+'/data/'+filename[:-4]+'.opt.tour'
-    # solveProblem(tsp_file, tour_file, save_file)
+    filename = 'att48.tsp'
+    tsp_file = path+'/data/'+filename
+    tour_file = path+'/data/'+filename[:-4]+'.opt.tour'
+    solveProblem(tsp_file, tour_file, save_file)
     
-    # getting num files
-    files_to_process = []
-    for filename in os.listdir(path+'/data'):
-        if filename.endswith('.tsp'):
-            files_to_process.append(filename)
-    total = len(files_to_process)   
+    # # getting num files
+    # files_to_process = []
+    # for filename in os.listdir(path+'/data'):
+    #     if filename.endswith('.tsp'):
+    #         files_to_process.append(filename)
+    # total = len(files_to_process)   
 
-    # processing files
-    for i, filename in enumerate(files_to_process):
-        tour_file = path+'/data/'+filename[:-4]+'.opt.tour'
-        tsp_file = path+'/data/'+filename
-        if not os.path.exists(tour_file):
-            print('No tour file found for', filename)
-            continue
-        print('\rProcessing file', filename, i, 'of', total, end='')
+    # # processing files
+    # for i, filename in enumerate(files_to_process):
+    #     tour_file = path+'/data/'+filename[:-4]+'.opt.tour'
+    #     tsp_file = path+'/data/'+filename
+    #     if not os.path.exists(tour_file):
+    #         print('No tour file found for', filename)
+    #         continue
+    #     print('\rProcessing file', filename, i, 'of', total, end='')
         
-        solveProblem(tsp_file, tour_file, save_file)
+    #     solveProblem(tsp_file, tour_file, save_file)
     print('All files processed')

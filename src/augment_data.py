@@ -10,11 +10,11 @@ def cluster_node(node):
             cluster = 3
     elif x <= 2/3:
         if y <= 1/3:
-           cluster = 4
+            cluster = 4
         elif y <= 2/3:
             cluster= 5
         else:
-           cluster = 6
+            cluster = 6
     else:
         if y <= 1/3:
             cluster = 7
@@ -28,6 +28,7 @@ def cluster_node(node):
 def center_relative_coord(node):
     x, y = node['coord']
     return (x - 0.5, y - 0.5)
+
 
 def cluster_relative_coord(node):
     x, y = node['coord']
@@ -44,6 +45,8 @@ def cluster_relative_coord(node):
     }
     cluster_center = cluster_centers[node['cluster']]
     return (x - cluster_center[0], y - cluster_center[1])
+
+
 def augment_data(graph):
     
     for node in graph.nodes:

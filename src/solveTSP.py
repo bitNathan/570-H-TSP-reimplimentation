@@ -7,6 +7,8 @@ from lower import solveSubproblem
 from upper import generateSubProb
 from numpy.linalg import norm as linalg_norm
 from numpy import array
+import mdptoolbox as mdpt
+import numpy as np
 
 
 def calculateDistance(graph, route):
@@ -100,6 +102,8 @@ def solveProblem(tsp_file, tour_file, save_file=None):
         return
     
     G = augment_data(G)
+    
+    # initial 2 datapoints
     tau = []
     tau.append(G.nodes[1]['number'])
     G.nodes[1]['visited'] = True
@@ -109,15 +113,28 @@ def solveProblem(tsp_file, tour_file, save_file=None):
     # print('tau:', tau)
     
     G = update_graph(G, tau)
+    
+    # initializing MDP, P and R
+    np.random.seed(97)
+    P, R = mdpt.example.rand(S=G.number_of_nodes(), A = 2)
+    mdpt.util.check(P, R)
+    
+    mdp = mdpt.mdp.PolicyIteration(P, R, 0.9)
     # print('G.nodes[1]:', G.nodes[8])
+    
+    # main loop
     while len(tau) < G.number_of_nodes():
-        subProb_nodes, start, end = generateSubProb(G, tau)
+
+        subProb_nodes, start, end = generateSubProb(G, tau, mdp)
         if len(subProb_nodes) < 3:
-            tau.extend(subProb_nodes)
+            sobSol = subProb_nodes
         else:
             sobSol = solveSubproblem(G, subProb_nodes, start, end)
-            tau.extend(sobSol)
+        tau.extend(sobSol)
         G = update_graph(G, tau)
+        # TODO update P and R, based on tour length of sobSol
+        P, R = mdpt.example.rand(S=G.number_of_nodes(), A = 2)
+        mdp = mdpt.mdp.PolicyIteration(P, R, 0.9)
 
     end_time = time()
     # print(tau)

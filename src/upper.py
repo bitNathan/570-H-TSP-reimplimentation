@@ -1,6 +1,9 @@
-def generateSubProb(G, tau):
-    # print('running generateSubProb')
-    # finding target cluster
+import mdptoolbox as mdpt
+import mdptoolbox.example
+import numpy as np
+
+
+def naiveClusterSolving(G, tau):
     for node in G.nodes():
         if G.nodes[node]['visited'] is False:
             break
@@ -14,5 +17,16 @@ def generateSubProb(G, tau):
                 target_nodes.append(node)
                 if len(target_nodes) >= 3:
                     break
-
+    
     return target_nodes, target_nodes[0], target_nodes[-1]
+
+
+def generateSubProb(G, tau, mdp):
+    
+    # use mdp to solve subproblem
+    mdp.run()
+    # print('optimal_policy:', mdp.policy)
+    # print('optimal_value_function:', mdp.V)
+    # TODO order subset of nodes according to policy
+
+    return naiveClusterSolving(G, tau)
